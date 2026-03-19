@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Sign Up — CampuStay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+<div class="auth-page">
+  <div class="auth-left">
+    <div class="orb orb-1" style="width:300px;height:300px;top:-50px;left:-80px;background:rgba(245,158,11,0.08)"></div>
+    <div style="position:relative;z-index:1;">
+      <a class="logo" href="../index.html" style="margin-bottom:3rem;display:inline-flex;">
+        <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V10.5Z" fill="white" opacity="0.95"/></svg></div>
+        <div class="logo-wordmark"><span class="logo-campu">Campu</span><span class="logo-stay">Stay</span></div>
+      </a>
+      <h2 style="font-size:2rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:1rem;">Join 12,000+ students</h2>
+      <p style="color:var(--text3);font-size:0.95rem;line-height:1.8;margin-bottom:2rem;">Create your free account and start finding your perfect campus home today. No credit card required.</p>
+      <div style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+        <div style="text-align:center;">
+          <div style="font-family:'Clash Display',sans-serif;font-size:1.75rem;font-weight:700;color:var(--accent);">Free</div>
+          <div style="font-size:0.78rem;color:var(--text3);">For students</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Clash Display',sans-serif;font-size:1.75rem;font-weight:700;color:var(--teal);">2 min</div>
+          <div style="font-size:0.78rem;color:var(--text3);">Setup time</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-family:'Clash Display',sans-serif;font-size:1.75rem;font-weight:700;color:var(--blue);">3,200+</div>
+          <div style="font-size:0.78rem;color:var(--text3);">Listings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="auth-right">
+    <div class="auth-box">
+      <div class="auth-title">Create your account</div>
+      <div class="auth-sub">Join CampuStay for free</div>
+
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);margin-bottom:0.75rem;">I want to</div>
+        <div class="role-cards">
+          <div class="role-card selected" data-role="student" onclick="selectRole(this)">
+            <div class="role-emoji">🎓</div><div class="role-name">Find Housing</div>
+          </div>
+          <div class="role-card" data-role="owner" onclick="selectRole(this)">
+            <div class="role-emoji">🏠</div><div class="role-name">List Property</div>
+          </div>
+          <div class="role-card" style="pointer-events:none;opacity:0.4;">
+            <div class="role-emoji">⚙️</div><div class="role-name">Admin</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-form">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" type="text" id="name" placeholder="Ananya Sharma"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" type="email" id="email" placeholder="ananya@example.com"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input class="form-input" type="tel" id="phone" placeholder="+91 9876543210"/>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input class="form-input" type="password" id="password" placeholder="Min 6 characters"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm Password</label>
+            <input class="form-input" type="password" id="confirmPassword" placeholder="Repeat password"/>
+          </div>
+        </div>
+        <div id="college-group" class="form-group">
+          <label class="form-label">College / University</label>
+          <input class="form-input" type="text" id="college" placeholder="IIT Bombay, Delhi University..."/>
+        </div>
+        <button class="btn btn-primary btn-lg" id="signupBtn" onclick="doSignup()" style="justify-content:center;width:100%;">
+          Create Free Account →
+        </button>
+      </div>
+      <p style="font-size:0.75rem;color:var(--text3);text-align:center;margin-top:1rem;">By signing up, you agree to our <a href="#" style="color:var(--accent)">Terms</a> and <a href="#" style="color:var(--accent)">Privacy Policy</a></p>
+      <div class="auth-link">Already have an account? <a href="login.html">Log in</a></div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+let selectedRole = 'student';
+function selectRole(el) {
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedRole = el.dataset.role;
+  document.getElementById('college-group').style.display = selectedRole === 'student' ? 'flex' : 'none';
+}
+
+async function doSignup() {
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const confirm = document.getElementById('confirmPassword').value;
+  const btn = document.getElementById('signupBtn');
+  if (!name || !email || !password) { showToast('Please fill all required fields', 'error'); return; }
+  if (password !== confirm) { showToast('Passwords do not match', 'error'); return; }
+  if (password.length < 6) { showToast('Password must be at least 6 characters', 'error'); return; }
+
+  // Demo mode — no backend needed
+  const mockUser = { _id: 'u_' + Date.now(), name, email, role: selectedRole };
+  localStorage.setItem('cs_token', 'demo_token_' + selectedRole);
+  localStorage.setItem('cs_user', JSON.stringify(mockUser));
+  showToast('Account created! Welcome 🎉', 'success');
+  setTimeout(() => {
+    window.location.href = selectedRole === 'owner' ? 'owner-dashboard.html' : 'student-dashboard.html';
+  }, 700);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin Dashboard — CampuStay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="logo" href="../index.html"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V10.5Z" fill="white" opacity="0.95"/></svg></div><div class="logo-wordmark"><span class="logo-campu">Campu</span><span class="logo-stay">Stay</span></div></a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="switchTab('overview')" id="snav-overview" class="active">Overview</a></li>
+    <li><a href="#" onclick="switchTab('properties')" id="snav-properties">Properties</a></li>
+    <li><a href="#" onclick="switchTab('users')" id="snav-users">Users</a></li>
+    <li><a href="#" onclick="switchTab('bookings')" id="snav-bookings">Bookings</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div style="padding:0.35rem 0.85rem;border-radius:100px;background:rgba(251,113,133,0.1);border:1px solid rgba(251,113,133,0.2);font-size:0.75rem;font-weight:600;color:var(--rose)">⚙️ Admin</div>
+    <div class="avatar" id="user-avatar" onclick="toggleDropdown('userDrop')" style="background:linear-gradient(135deg,#818cf8,#4f46e5)">
+      A
+      <div class="dropdown-menu" id="userDrop">
+        <a id="user-name-display" style="font-weight:600;color:var(--text)">Admin</a>
+        <div class="dropdown-divider"></div>
+        <a onclick="logout()">🚪 Log Out</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-layout">
+  <div class="dash-sidebar">
+    <div class="sidebar-section-label">Dashboard</div>
+    <button class="sidebar-item active" data-tab="overview" onclick="switchTab('overview')"><span class="si-icon">📊</span> Overview</button>
+    <button class="sidebar-item" data-tab="properties" onclick="switchTab('properties')"><span class="si-icon">🏘️</span> Properties</button>
+    <button class="sidebar-item" data-tab="users" onclick="switchTab('users')"><span class="si-icon">👥</span> Users</button>
+    <button class="sidebar-item" data-tab="bookings" onclick="switchTab('bookings')"><span class="si-icon">📋</span> Bookings</button>
+    <button class="sidebar-item" data-tab="reports" onclick="switchTab('reports')"><span class="si-icon">📈</span> Reports</button>
+    <div class="sidebar-section-label">Account</div>
+    <button class="sidebar-item" onclick="logout()"><span class="si-icon">🚪</span> Log Out</button>
+  </div>
+
+  <div class="dash-content">
+
+    <!-- TAB: OVERVIEW -->
+    <div id="tab-overview">
+      <div class="dash-header">
+        <h2>Platform Overview</h2>
+        <p>Real-time metrics across CampuStay</p>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-icon">👥</div><div class="metric-label">Total Users</div><div class="metric-value" id="m-users">0</div><div class="metric-change up">↑ +48 this week</div></div>
+        <div class="metric-card"><div class="metric-icon">🏘️</div><div class="metric-label">Total Properties</div><div class="metric-value" id="m-props">0</div><div class="metric-change up">↑ +12 this week</div></div>
+        <div class="metric-card"><div class="metric-icon">📋</div><div class="metric-label">Total Bookings</div><div class="metric-value" id="m-bookings">0</div><div class="metric-change up">↑ +30 this week</div></div>
+        <div class="metric-card"><div class="metric-icon">⏳</div><div class="metric-label">Pending Approvals</div><div class="metric-value" id="m-pending" style="color:var(--accent)">0</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem">
+        <div class="chart-wrap">
+          <h3 style="font-size:0.9rem;font-weight:600;margin-bottom:1rem">📈 Bookings (Last 7 Days)</h3>
+          <canvas id="bookingsChart"></canvas>
+        </div>
+        <div class="chart-wrap">
+          <h3 style="font-size:0.9rem;font-weight:600;margin-bottom:1rem">🏙️ Listings by City</h3>
+          <canvas id="cityChart"></canvas>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        <div class="chart-wrap">
+          <h3 style="font-size:0.9rem;font-weight:600;margin-bottom:1rem">🏘️ Property Types</h3>
+          <canvas id="typeChart"></canvas>
+        </div>
+        <div class="card">
+          <h3 style="font-size:0.9rem;font-weight:600;margin-bottom:1rem">⚡ Recent Activity</h3>
+          <div id="activity-feed"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: PROPERTIES -->
+    <div id="tab-properties" style="display:none">
+      <div class="dash-header">
+        <h2>Manage Properties</h2>
+        <p>Review, approve, or remove listings</p>
+      </div>
+      <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm active" id="filter-all" onclick="filterPropsBy('all',this)">All</button>
+        <button class="btn btn-ghost btn-sm" id="filter-pending" onclick="filterPropsBy('pending',this)">Pending <span id="pending-count" style="color:var(--accent)"></span></button>
+        <button class="btn btn-ghost btn-sm" id="filter-approved" onclick="filterPropsBy('approved',this)">Approved</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Owner</th><th>City</th><th>Price</th><th>Type</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="props-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: USERS -->
+    <div id="tab-users" style="display:none">
+      <div class="dash-header">
+        <h2>User Management</h2>
+        <p>View and manage all registered users</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Bookings</th><th>Actions</th></tr></thead>
+          <tbody id="users-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: BOOKINGS -->
+    <div id="tab-bookings" style="display:none">
+      <div class="dash-header">
+        <h2>All Bookings</h2>
+        <p>Monitor all booking transactions on the platform</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student</th><th>Property</th><th>Owner</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+          <tbody id="bookings-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: REPORTS -->
+    <div id="tab-reports" style="display:none">
+      <div class="dash-header">
+        <h2>Reports & Analytics</h2>
+        <p>Detailed platform performance insights</p>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-icon">💰</div><div class="metric-label">Platform Revenue</div><div class="metric-value">₹1.2L</div><div class="metric-change up">↑ +18% MoM</div></div>
+        <div class="metric-card"><div class="metric-icon">📊</div><div class="metric-label">Booking Rate</div><div class="metric-value">23%</div><div class="metric-change up">↑ +4%</div></div>
+        <div class="metric-card"><div class="metric-icon">⭐</div><div class="metric-label">Avg Platform Rating</div><div class="metric-value">4.7</div></div>
+        <div class="metric-card"><div class="metric-icon">🔄</div><div class="metric-label">Retention Rate</div><div class="metric-value">68%</div><div class="metric-change up">↑ +8%</div></div>
+      </div>
+      <div class="chart-wrap" style="margin-top:1.5rem">
+        <h3 style="font-size:0.9rem;font-weight:600;margin-bottom:1rem">📈 Monthly Growth (Users & Properties)</h3>
+        <canvas id="growthChart" style="max-height:300px"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../js/admin.js"></script>
+</body>
+</html>

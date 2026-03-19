@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Student Dashboard — CampuStay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    .dash-main { display: flex; flex-direction: column; flex: 1; }
+    .mobile-tabs { display: none; }
+    @media(max-width:900px) {
+      .mobile-tabs { display: flex; overflow-x: auto; gap: 0.5rem; padding: 1rem; background: var(--surface); border-bottom: 1px solid var(--border); }
+      .mobile-tab-btn { white-space: nowrap; padding: 0.5rem 1rem; border-radius: 100px; font-size: 0.8rem; font-weight: 500; background: var(--surface2); color: var(--text2); border: none; cursor: pointer; font-family: 'Satoshi', sans-serif; transition: all 0.2s; }
+      .mobile-tab-btn.active { background: rgba(245,158,11,0.1); color: var(--accent); }
+    }
+  </style>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<!-- PROPERTY MODAL -->
+<div class="modal-overlay hidden" id="propertyModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="m-name"></div>
+        <div style="color:var(--text3);font-size:0.82rem;margin-top:3px" id="m-loc"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-hero" id="m-emoji"></div>
+    <div class="modal-detail-grid">
+      <div class="modal-detail-item"><label>Monthly Rent</label><span id="m-price" style="color:var(--accent);font-size:1.3rem"></span></div>
+      <div class="modal-detail-item"><label>Type</label><span id="m-type"></span></div>
+      <div class="modal-detail-item"><label>For</label><span id="m-gender"></span></div>
+      <div class="modal-detail-item"><label>Rooms Available</label><span id="m-rooms"></span></div>
+    </div>
+    <div style="margin-bottom:1.25rem">
+      <div class="metric-label" style="margin-bottom:0.5rem">Amenities</div>
+      <div class="amenity-chips" id="m-amenities"></div>
+    </div>
+    <div style="margin-bottom:1.5rem">
+      <div class="metric-label" style="margin-bottom:0.5rem">About this property</div>
+      <p style="font-size:0.875rem;color:var(--text2);line-height:1.8" id="m-desc"></p>
+    </div>
+    <button class="btn btn-primary btn-lg" style="width:100%;justify-content:center" onclick="bookCurrentProperty()">📋 Request Booking</button>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="logo" href="../index.html"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V10.5Z" fill="white" opacity="0.95"/></svg></div><div class="logo-wordmark"><span class="logo-campu">Campu</span><span class="logo-stay">Stay</span></div></a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="switchTab('home')" id="snav-home" class="active">Home</a></li>
+    <li><a href="#" onclick="switchTab('browse')" id="snav-browse">Browse</a></li>
+    <li><a href="#" onclick="switchTab('roommate')" id="snav-roommate">Roommate</a></li>
+    <li><a href="#" onclick="switchTab('bookings')" id="snav-bookings">My Bookings</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="avatar" id="user-avatar" onclick="toggleDropdown('userDrop')">
+      A
+      <div class="dropdown-menu" id="userDrop">
+        <a id="user-name-display" style="font-weight:600;color:var(--text)">Student</a>
+        <a style="color:var(--text3);font-size:0.8rem">🎓 Student Account</a>
+        <div class="dropdown-divider"></div>
+        <a onclick="logout()">🚪 Log Out</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE TABS -->
+<div class="mobile-tabs">
+  <button class="mobile-tab-btn active" onclick="switchTab('home')">🏠 Home</button>
+  <button class="mobile-tab-btn" onclick="switchTab('browse')">🔍 Browse</button>
+  <button class="mobile-tab-btn" onclick="switchTab('roommate')">🤝 Roommate</button>
+  <button class="mobile-tab-btn" onclick="switchTab('bookings')">📋 Bookings</button>
+</div>
+
+<div class="dash-layout">
+  <!-- SIDEBAR -->
+  <div class="dash-sidebar">
+    <div class="sidebar-section-label">Navigation</div>
+    <button class="sidebar-item active" data-tab="home" onclick="switchTab('home')"><span class="si-icon">🏠</span> Home</button>
+    <button class="sidebar-item" data-tab="browse" onclick="switchTab('browse')"><span class="si-icon">🔍</span> Browse PGs</button>
+    <button class="sidebar-item" data-tab="roommate" onclick="switchTab('roommate')"><span class="si-icon">🤝</span> Roommate Finder</button>
+    <button class="sidebar-item" data-tab="bookings" onclick="switchTab('bookings')"><span class="si-icon">📋</span> My Bookings</button>
+    <div class="sidebar-section-label">Account</div>
+    <button class="sidebar-item" onclick="logout()"><span class="si-icon">🚪</span> Log Out</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="dash-content">
+
+    <!-- TAB: HOME -->
+    <div id="tab-home">
+      <div class="dash-header">
+        <h2 id="welcome-msg">Good morning! 👋</h2>
+        <p id="welcome-sub">Here's your housing overview</p>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-icon">📋</div>
+          <div class="metric-label">Active Bookings</div>
+          <div class="metric-value" id="stat-bookings">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">❤️</div>
+          <div class="metric-label">Saved Properties</div>
+          <div class="metric-value" id="stat-saved">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">🤝</div>
+          <div class="metric-label">Roommate Matches</div>
+          <div class="metric-value">4</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">📊</div>
+          <div class="metric-label">Profile Complete</div>
+          <div class="metric-value">78%</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:78%"></div></div>
+        </div>
+      </div>
+
+      <div class="section-divider">
+        <h3>Recommended for You</h3>
+        <button class="btn btn-outline btn-sm" onclick="switchTab('browse')">View All →</button>
+      </div>
+      <div class="property-grid" id="featured-properties"></div>
+
+      <div class="section-divider" style="margin-top:3rem">
+        <h3>Top Roommate Matches</h3>
+        <button class="btn btn-outline btn-sm" onclick="switchTab('roommate')">Find More →</button>
+      </div>
+      <div class="roommate-grid" id="home-roommates"></div>
+    </div>
+
+    <!-- TAB: BROWSE -->
+    <div id="tab-browse" style="display:none">
+      <div class="dash-header">
+        <h2>Browse PGs & Hostels</h2>
+        <p>Find verified housing near your campus</p>
+      </div>
+      <div class="search-bar">
+        <div class="search-group" style="flex:2">
+          <label>City / Location</label>
+          <input class="form-input" type="text" id="search-loc" placeholder="Mumbai, Pune, Delhi..."/>
+        </div>
+        <div class="search-group">
+          <label>Type</label>
+          <select class="form-select" id="search-type">
+            <option value="">All Types</option>
+            <option>Hostel</option>
+            <option>PG</option>
+          </select>
+        </div>
+        <div class="search-group">
+          <label>For</label>
+          <select class="form-select" id="search-gender">
+            <option value="">All</option>
+            <option>Boys</option>
+            <option>Girls</option>
+            <option>Both</option>
+          </select>
+        </div>
+        <div class="search-group">
+          <label>Max ₹/month</label>
+          <input class="form-input" type="number" id="search-price" placeholder="20000"/>
+        </div>
+        <button class="btn btn-primary" onclick="filterProperties()">Search</button>
+      </div>
+      <div id="property-map"></div>
+      <div class="section-divider">
+        <h3>Available Properties</h3>
+        <span style="font-size:0.875rem;color:var(--text3)" id="prop-count"></span>
+      </div>
+      <div class="property-grid" id="all-properties"></div>
+    </div>
+
+    <!-- TAB: ROOMMATE -->
+    <div id="tab-roommate" style="display:none">
+      <div class="dash-header">
+        <h2>Roommate Finder</h2>
+        <p>Find students who match your lifestyle perfectly</p>
+      </div>
+      <div id="survey-section">
+        <div class="survey-wrap">
+          <div class="survey-progress">
+            <div class="survey-progress-bar"><div class="survey-progress-fill" id="survey-bar" style="width:0%"></div></div>
+            <div class="survey-step-label" id="survey-step-label">Step 1 of 6</div>
+          </div>
+          <div class="survey-card" id="survey-card">
+            <!-- populated by JS -->
+          </div>
+        </div>
+      </div>
+      <div id="matches-section" style="display:none">
+        <div class="section-divider">
+          <h3>Your Compatibility Matches</h3>
+          <button class="btn btn-outline btn-sm" onclick="restartSurvey()">Retake Survey</button>
+        </div>
+        <div class="roommate-grid" id="roommate-results"></div>
+      </div>
+    </div>
+
+    <!-- TAB: BOOKINGS -->
+    <div id="tab-bookings" style="display:none">
+      <div class="dash-header">
+        <h2>My Bookings</h2>
+        <p>Track all your housing applications</p>
+      </div>
+      <div id="booking-list"></div>
+    </div>
+
+  </div><!-- /dash-content -->
+</div><!-- /dash-layout -->
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/student.js"></script>
+</body>
+</html>

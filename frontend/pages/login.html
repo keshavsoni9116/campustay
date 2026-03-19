@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Login — CampuStay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<div class="auth-page">
+  <!-- LEFT PANEL -->
+  <div class="auth-left">
+    <div class="orb orb-1" style="width:300px;height:300px;top:-50px;left:-80px;background:rgba(245,158,11,0.08)"></div>
+    <div class="orb orb-2" style="width:250px;height:250px;bottom:-40px;right:-60px;background:rgba(45,212,191,0.06)"></div>
+    <div style="position:relative;z-index:1;">
+      <a class="logo" href="../index.html" style="margin-bottom:3rem;display:inline-flex;">
+        <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V10.5Z" fill="white" opacity="0.95"/></svg></div>
+        <div class="logo-wordmark"><span class="logo-campu">Campu</span><span class="logo-stay">Stay</span></div>
+      </a>
+      <h2 style="font-size:2rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:1rem;">Find your campus home today</h2>
+      <p style="color:var(--text3);font-size:0.95rem;margin-bottom:3rem;line-height:1.8;">12,000+ students have already found their perfect PG or hostel. Verified listings, roommate matching, and one-click booking.</p>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div style="display:flex;align-items:center;gap:12px;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);">
+          <span style="font-size:1.5rem;">🔍</span>
+          <div>
+            <div style="font-weight:600;font-size:0.9rem;">Smart Search</div>
+            <div style="font-size:0.8rem;color:var(--text3);">Filter by price, distance & amenities</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);">
+          <span style="font-size:1.5rem;">🤝</span>
+          <div>
+            <div style="font-weight:600;font-size:0.9rem;">Roommate Matching</div>
+            <div style="font-size:0.8rem;color:var(--text3);">AI-powered compatibility scoring</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:1rem;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r2);">
+          <span style="font-size:1.5rem;">✅</span>
+          <div>
+            <div style="font-weight:600;font-size:0.9rem;">Verified Only</div>
+            <div style="font-size:0.8rem;color:var(--text3);">Every listing reviewed by our team</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="auth-right">
+    <div class="auth-box">
+      <div class="auth-title">Welcome back 👋</div>
+      <div class="auth-sub">Log in to your CampuStay account</div>
+
+      <div style="margin-bottom:1.5rem;">
+        <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--text3);margin-bottom:0.75rem;">I am a</div>
+        <div class="role-cards" id="roleCards">
+          <div class="role-card selected" data-role="student" onclick="selectRole(this)">
+            <div class="role-emoji">🎓</div>
+            <div class="role-name">Student</div>
+          </div>
+          <div class="role-card" data-role="owner" onclick="selectRole(this)">
+            <div class="role-emoji">🏠</div>
+            <div class="role-name">Owner</div>
+          </div>
+          <div class="role-card" data-role="admin" onclick="selectRole(this)">
+            <div class="role-emoji">⚙️</div>
+            <div class="role-name">Admin</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auth-form">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input class="form-input" type="email" id="email" placeholder="ananya@example.com"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" type="password" id="password" placeholder="••••••••"/>
+        </div>
+        <div style="display:flex;justify-content:flex-end;">
+          <a href="#" style="font-size:0.8rem;color:var(--accent);">Forgot password?</a>
+        </div>
+        <button class="btn btn-primary btn-lg" id="loginBtn" onclick="doLogin()" style="justify-content:center;width:100%;">
+          Log In
+        </button>
+      </div>
+
+      <div style="margin:1.5rem 0;display:flex;align-items:center;gap:1rem;">
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+        <div style="font-size:0.78rem;color:var(--text3)">or use demo account</div>
+        <div style="flex:1;height:1px;background:var(--border)"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;">
+        <button class="btn btn-ghost btn-sm" onclick="demoLogin('student')" style="justify-content:center;font-size:0.75rem;">🎓 Student</button>
+        <button class="btn btn-ghost btn-sm" onclick="demoLogin('owner')" style="justify-content:center;font-size:0.75rem;">🏠 Owner</button>
+        <button class="btn btn-ghost btn-sm" onclick="demoLogin('admin')" style="justify-content:center;font-size:0.75rem;">⚙️ Admin</button>
+      </div>
+
+      <div class="auth-link">Don't have an account? <a href="signup.html">Sign up free</a></div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script>
+let selectedRole = 'student';
+function selectRole(el) {
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedRole = el.dataset.role;
+}
+
+async function doLogin() {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('loginBtn');
+  if (!email || !password) { showToast('Please fill all fields', 'error'); return; }
+
+  // Demo credentials — works with no backend
+  const demoAccounts = {
+    'ananya@student.com':  { password: 'demo123', role: 'student', name: 'Ananya Sharma' },
+    'priya@owner.com':     { password: 'demo123', role: 'owner',   name: 'Priya Nair' },
+    'admin@campustay.com': { password: 'demo123', role: 'admin',   name: 'Admin User' },
+  };
+  const demo = demoAccounts[email.toLowerCase()];
+  if (demo && password === demo.password) {
+    demoLogin(demo.role);
+    return;
+  }
+
+  // Real backend login
+  btn.innerHTML = '<div class="spinner"></div> Logging in...';
+  btn.disabled = true;
+  try {
+    const data = await apiFetch('/auth/login', { method:'POST', body: JSON.stringify({ email, password, role: selectedRole }) });
+    localStorage.setItem('cs_token', data.token);
+    localStorage.setItem('cs_user', JSON.stringify(data.user));
+    showToast('Welcome back! 👋', 'success');
+    setTimeout(() => {
+      const role = data.user.role;
+      window.location.href = role === 'admin' ? 'admin-dashboard.html' : role === 'owner' ? 'owner-dashboard.html' : 'student-dashboard.html';
+    }, 500);
+  } catch(e) {
+    showToast('No backend running. Use the demo buttons below ↓', 'error');
+    btn.innerHTML = 'Log In';
+    btn.disabled = false;
+  }
+}
+
+function demoLogin(role) {
+  const demos = {
+    student: { email:'ananya@student.com', password:'demo123' },
+    owner: { email:'priya@owner.com', password:'demo123' },
+    admin: { email:'admin@campustay.com', password:'demo123' }
+  };
+  document.getElementById('email').value = demos[role].email;
+  document.getElementById('password').value = demos[role].password;
+  document.querySelectorAll('.role-card').forEach(c => { c.classList.toggle('selected', c.dataset.role === role); });
+  selectedRole = role;
+  // Demo mode: store mock user and redirect
+  const mockUsers = {
+    student: { _id:'s1', name:'Ananya Sharma', email:'ananya@student.com', role:'student' },
+    owner: { _id:'o1', name:'Priya Nair', email:'priya@owner.com', role:'owner' },
+    admin: { _id:'a1', name:'Admin User', email:'admin@campustay.com', role:'admin' }
+  };
+  localStorage.setItem('cs_token', 'demo_token_' + role);
+  localStorage.setItem('cs_user', JSON.stringify(mockUsers[role]));
+  showToast('Demo mode activated! 🚀', 'success');
+  setTimeout(() => {
+    window.location.href = role === 'admin' ? 'admin-dashboard.html' : role === 'owner' ? 'owner-dashboard.html' : 'student-dashboard.html';
+  }, 600);
+}
+
+document.getElementById('password').addEventListener('keypress', e => { if(e.key==='Enter') doLogin(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>CampuStay — Student Housing Reimagined</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div id="toast" class="toast"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="logo" href="index.html">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V10.5Z" fill="white" opacity="0.95"/></svg>
+    </div>
+    <div class="logo-wordmark"><span class="logo-campu">Campu</span><span class="logo-stay">Stay</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="nav-actions">
+    <a class="btn btn-outline" href="pages/login.html">Log In</a>
+    <a class="btn btn-primary" href="pages/signup.html">Get Started →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      India's #1 Student Housing Platform
+    </div>
+    <h1>Find Your Perfect<br><span class="gradient-text">Campus Home</span></h1>
+    <p>Discover verified hostels & PGs, connect with compatible roommates, and book your ideal place — all in one seamless platform.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary btn-xl" href="pages/login.html">🏠 Find a PG</a>
+      <a class="btn btn-outline btn-xl" href="pages/signup.html">🤝 Find a Roommate</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll to explore</span>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="reveal">
+      <div class="stat-num" data-count="12400">0</div>
+      <div class="stat-label">Students Housed</div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="stat-num" data-count="3200">0</div>
+      <div class="stat-label">Listed Properties</div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="stat-num" data-count="850">0</div>
+      <div class="stat-label">Verified Owners</div>
+    </div>
+    <div class="reveal reveal-delay-3">
+      <div class="stat-num" data-count="98">0</div>
+      <div class="stat-label">% Satisfaction Rate</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div id="features">
+  <div class="section">
+    <div class="section-tag reveal">Why CampuStay?</div>
+    <div class="section-title reveal">Everything You Need,<br>In One Place</div>
+    <div class="section-sub reveal">From searching to booking to finding roommates — student housing has never been this easy.</div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon amber">🔍</div>
+        <h3>Smart Property Search</h3>
+        <p>Filter by location, price, gender preference, amenities, and distance from campus. Find exactly what fits your life.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon teal">🗺️</div>
+        <h3>Live Interactive Maps</h3>
+        <p>View every listing on a real map with accurate distances from your college gate. No more surprises.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon blue">🤝</div>
+        <h3>AI Roommate Matching</h3>
+        <p>Our compatibility algorithm matches you with students who share your sleep schedule, habits, and lifestyle.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon rose">✅</div>
+        <h3>Verified Listings Only</h3>
+        <p>Every property is reviewed by our admin team before going live. Zero fake listings, 100% genuine owners.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon amber">📋</div>
+        <h3>One-Click Booking</h3>
+        <p>Express interest instantly, track application status in real time, and get owner approval without endless calls.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon teal">📊</div>
+        <h3>Owner Dashboard</h3>
+        <p>Property owners get a full-featured dashboard to manage listings, review applications, and track earnings.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div id="how" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="section">
+    <div class="section-tag reveal">Simple Process</div>
+    <div class="section-title reveal">Get Housed in 3 Easy Steps</div>
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <div class="how-step-num">01</div>
+        <h3>Create Your Profile</h3>
+        <p>Sign up as a student, fill your preferences, and complete the roommate survey to unlock personalized matches.</p>
+      </div>
+      <div class="how-step reveal reveal-delay-1">
+        <div class="how-step-num">02</div>
+        <h3>Browse & Discover</h3>
+        <p>Explore verified listings on the map, filter by your exact needs, and save favorites for easy comparison.</p>
+      </div>
+      <div class="how-step reveal reveal-delay-2">
+        <div class="how-step-num">03</div>
+        <h3>Book & Move In</h3>
+        <p>Send a booking request with one click, get owner approval via the platform, and move into your new home.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED PROPERTIES -->
+<div class="section">
+  <div class="section-tag reveal">Top Picks</div>
+  <div class="section-title reveal">Featured Properties</div>
+  <div class="section-sub reveal">Handpicked verified listings from Mumbai, Pune, Delhi & Bangalore</div>
+  <div class="property-grid" id="featured-props">
+    <!-- populated by JS -->
+  </div>
+  <div style="text-align:center;margin-top:2rem;">
+    <a class="btn btn-outline btn-lg" href="pages/login.html">View All Properties →</a>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div style="background:var(--bg2);border-top:1px solid var(--border);">
+  <div class="section">
+    <div class="section-tag reveal">Student Stories</div>
+    <div class="section-title reveal">Loved by Students<br>Across India</div>
+    <div class="testimonials">
+      <div class="testimonial reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">Found a perfect PG near my college in less than 2 days. The roommate matching feature is genuinely incredible — my current roommate is my best friend now!</p>
+        <div class="testimonial-author">
+          <div class="tav" style="background:linear-gradient(135deg,#f59e0b,#fb923c);">A</div>
+          <div>
+            <div style="font-weight:600;font-size:0.875rem;">Ananya Sharma</div>
+            <div style="font-size:0.78rem;color:var(--text3);">Delhi University, 3rd Year</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial reveal reveal-delay-1">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">The map feature was a game-changer. I could see exactly how far each PG was from IIT gate. Booked within 10 minutes. Zero hidden surprises.</p>
+        <div class="testimonial-author">
+          <div class="tav" style="background:linear-gradient(135deg,#2dd4bf,#0f7a5e);">R</div>
+          <div>
+            <div style="font-weight:600;font-size:0.875rem;">Rohan Mehta</div>
+            <div style="font-size:0.78rem;color:var(--text3);">IIT Bombay, M.Tech</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial reveal reveal-delay-2">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">As a property owner, managing my 3 PGs used to be a nightmare. CampuStay's owner dashboard made it incredibly streamlined. Bookings doubled in 2 months!</p>
+        <div class="testimonial-author">
+          <div class="tav" style="background:linear-gradient(135deg,#818cf8,#4f46e5);">P</div>
+          <div>
+            <div style="font-weight:600;font-size:0.875rem;">Priya Nair</div>
+            <div style="font-size:0.78rem;color:var(--text3);">Property Owner, Pune</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div id="pricing">
+  <div class="section">
+    <div class="section-tag reveal">Transparent Pricing</div>
+    <div class="section-title reveal">Plans for Everyone</div>
+    <div class="section-sub reveal">Free for students. Affordable for owners. No hidden fees, ever.</div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-label">Student — Free</div>
+        <div class="pricing-price">₹0 <sub>/mo</sub></div>
+        <div class="pricing-desc">Everything a student needs to find their ideal home.</div>
+        <ul class="pricing-features">
+          <li>Browse all verified listings</li>
+          <li>Interactive map view</li>
+          <li>Roommate compatibility matching</li>
+          <li>Unlimited booking requests</li>
+          <li>Real-time booking status</li>
+        </ul>
+        <a class="btn btn-outline" href="pages/signup.html" style="width:100%;justify-content:center;">Sign Up Free</a>
+      </div>
+      <div class="pricing-card featured reveal reveal-delay-1">
+        <div class="pricing-tag">Most Popular</div>
+        <div class="pricing-label">Owner — Starter</div>
+        <div class="pricing-price">₹999 <sub>/mo</sub></div>
+        <div class="pricing-desc">Everything you need to manage your properties professionally.</div>
+        <ul class="pricing-features">
+          <li>List up to 5 properties</li>
+          <li>Booking request management</li>
+          <li>Approve / decline requests</li>
+          <li>Earnings dashboard</li>
+          <li>Verified badge on listings</li>
+          <li>Priority support</li>
+        </ul>
+        <a class="btn btn-primary" href="pages/signup.html" style="width:100%;justify-content:center;">Start Free Trial</a>
+      </div>
+      <div class="pricing-card reveal reveal-delay-2">
+        <div class="pricing-label">Owner — Pro</div>
+        <div class="pricing-price">₹2,499 <sub>/mo</sub></div>
+        <div class="pricing-desc">For professional property managers with multiple listings.</div>
+        <ul class="pricing-features">
+          <li>Unlimited listings</li>
+          <li>Advanced analytics & reports</li>
+          <li>Priority listing placement</li>
+          <li>Bulk booking management</li>
+          <li>Dedicated account manager</li>
+          <li>Custom branding</li>
+        </ul>
+        <a class="btn btn-outline" href="pages/signup.html" style="width:100%;justify-content:center;">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BANNER -->
+<div style="background:linear-gradient(135deg,rgba(245,158,11,0.08),rgba(251,146,60,0.06));border-top:1px solid rgba(245,158,11,0.1);border-bottom:1px solid rgba(245,158,11,0.1);">
+  <div class="section" style="text-align:center;padding:4rem 2rem;">
+    <div class="section-title reveal">Ready to Find Your<br><span class="gradient-text">Perfect Campus Home?</span></div>
+    <p style="color:var(--text2);margin:1rem auto 2rem;max-width:480px;" class="reveal">Join 12,000+ students who found their ideal housing through CampuStay. Free forever for students.</p>
+    <div class="reveal" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a class="btn btn-primary btn-xl" href="pages/signup.html">Get Started — It's Free</a>
+      <a class="btn btn-outline btn-xl" href="pages/login.html">I Have an Account</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo-wordmark" style="font-family:'Playfair Display',Georgia,serif;font-size:1.45rem;display:flex;align-items:center;gap:10px;margin-bottom:0.5rem">
+        <div class="logo-icon" style="width:32px;height:32px;border-radius:9px">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V10.5Z" fill="white" opacity="0.95"/></svg>
+        </div>
+        <span><span class="logo-campu">Campu</span><span class="logo-stay">Stay</span></span>
+      </div>
+      <p>India's leading student housing platform. Connecting students with verified accommodations and compatible roommates since 2024.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a href="#">Browse PGs</a>
+      <a href="#">Roommate Finder</a>
+      <a href="#">Map View</a>
+      <a href="#">Owner Portal</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Blog</a>
+      <a href="#">Careers</a>
+      <a href="#">Press</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">Help Center</a>
+      <a href="#">Contact Us</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 CampuStay. All rights reserved.</span>
+    <span>Built with ❤️ for Indian students</span>
+  </div>
+</footer>
+
+<script>
+// Cursor glow
+const glow = document.getElementById('cursorGlow');
+document.addEventListener('mousemove', e => {
+  glow.style.left = e.clientX + 'px';
+  glow.style.top = e.clientY + 'px';
+});
+
+// Scroll reveal
+const ro = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// Animated counters
+function animateCounter(el, target, suffix = '') {
+  let start = 0;
+  const dur = 1800;
+  const step = (ts) => {
+    if (!start) start = ts;
+    const progress = Math.min((ts - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(ease * target).toLocaleString('en-IN') + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || (el.dataset.count === '98' ? '%' : '+');
+      animateCounter(el, target, suffix);
+      statsObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-count]').forEach(el => statsObserver.observe(el));
+
+// Featured properties (demo)
+const DEMO_PROPS = [
+  { name: 'Sunrise Boys Hostel', location: 'Koregaon Park, Pune', price: 8500, type: 'Hostel', gender: 'Boys', emoji: '🏢', amenities: ['WiFi', 'Meals', 'Laundry'] },
+  { name: 'Girls Paradise PG', location: 'Andheri West, Mumbai', price: 12000, type: 'PG', gender: 'Girls', emoji: '🏠', amenities: ['WiFi', 'AC', 'Security'] },
+  { name: 'Campus View Residency', location: 'HSR Layout, Bangalore', price: 9500, type: 'PG', gender: 'Both', emoji: '🏘️', amenities: ['WiFi', 'Meals', 'Gym'] },
+];
+const grid = document.getElementById('featured-props');
+if (grid) {
+  DEMO_PROPS.forEach(p => {
+    const genderClass = p.gender === 'Boys' ? 'boys' : p.gender === 'Girls' ? 'girls' : 'both';
+    grid.innerHTML += `
+      <div class="property-card reveal" onclick="window.location='pages/login.html'">
+        <div class="property-thumb">
+          ${p.emoji}
+          <div class="property-thumb-badge verified">✓ Verified</div>
+          <div class="property-save-btn">🤍</div>
+        </div>
+        <div class="property-body">
+          <div class="property-name">${p.name}</div>
+          <div class="property-loc">📍 ${p.location}</div>
+          <div class="property-price">₹${p.price.toLocaleString('en-IN')} <span>/month</span></div>
+          <div class="property-tags">
+            <span class="tag">${p.type}</span>
+            <span class="tag ${genderClass.toLowerCase()}">${p.gender}</span>
+            ${p.amenities.slice(0,2).map(a => `<span class="tag">${a}</span>`).join('')}
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;">Book Now</button>
+        </div>
+      </div>`;
+  });
+  // re-observe new cards
+  grid.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+}
+</script>
+</body>
+</html>

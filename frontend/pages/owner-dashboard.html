@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Owner Dashboard — CampuStay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/main.css"/>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div class="modal-overlay hidden" id="deleteModal">
+  <div class="modal" style="max-width:400px;text-align:center">
+    <div style="font-size:3rem;margin-bottom:1rem">🗑️</div>
+    <div class="modal-title" style="margin-bottom:0.5rem">Delete Property?</div>
+    <p style="color:var(--text3);font-size:0.875rem;margin-bottom:1.5rem">This action cannot be undone. All booking requests for this property will also be removed.</p>
+    <div style="display:flex;gap:1rem;justify-content:center">
+      <button class="btn btn-ghost" onclick="document.getElementById('deleteModal').classList.add('hidden')">Cancel</button>
+      <button class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="logo" href="../index.html"><div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10.5L12 3L21 10.5V20C21 20.55 20.55 21 20 21H15V15H9V21H4C3.45 21 3 20.55 3 20V10.5Z" fill="white" opacity="0.95"/></svg></div><div class="logo-wordmark"><span class="logo-campu">Campu</span><span class="logo-stay">Stay</span></div></a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="switchTab('properties')" id="snav-properties" class="active">Properties</a></li>
+    <li><a href="#" onclick="switchTab('add')" id="snav-add">Add Property</a></li>
+    <li><a href="#" onclick="switchTab('requests')" id="snav-requests">Booking Requests</a></li>
+    <li><a href="#" onclick="switchTab('earnings')" id="snav-earnings">Earnings</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn btn-primary btn-sm" onclick="switchTab('add')">+ Add Property</button>
+    <div class="avatar" id="user-avatar" onclick="toggleDropdown('userDrop')">
+      P
+      <div class="dropdown-menu" id="userDrop">
+        <a id="user-name-display" style="font-weight:600;color:var(--text)">Owner</a>
+        <a style="color:var(--text3);font-size:0.8rem">🏠 Property Owner</a>
+        <div class="dropdown-divider"></div>
+        <a onclick="logout()">🚪 Log Out</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="dash-layout">
+  <div class="dash-sidebar">
+    <div class="sidebar-section-label">Dashboard</div>
+    <button class="sidebar-item active" data-tab="properties" onclick="switchTab('properties')"><span class="si-icon">🏘️</span> My Properties</button>
+    <button class="sidebar-item" data-tab="add" onclick="switchTab('add')"><span class="si-icon">➕</span> Add Property</button>
+    <button class="sidebar-item" data-tab="requests" onclick="switchTab('requests')"><span class="si-icon">📋</span> Booking Requests</button>
+    <button class="sidebar-item" data-tab="earnings" onclick="switchTab('earnings')"><span class="si-icon">💰</span> Earnings</button>
+    <div class="sidebar-section-label">Account</div>
+    <button class="sidebar-item" onclick="logout()"><span class="si-icon">🚪</span> Log Out</button>
+  </div>
+
+  <div class="dash-content">
+
+    <!-- TAB: PROPERTIES -->
+    <div id="tab-properties">
+      <div class="dash-header">
+        <h2>My Properties</h2>
+        <p>Manage all your listed accommodations</p>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-icon">🏘️</div><div class="metric-label">Total Listings</div><div class="metric-value" id="stat-total">0</div></div>
+        <div class="metric-card"><div class="metric-icon">✅</div><div class="metric-label">Approved</div><div class="metric-value" id="stat-approved">0</div></div>
+        <div class="metric-card"><div class="metric-icon">⏳</div><div class="metric-label">Pending Review</div><div class="metric-value" id="stat-pending-props">0</div></div>
+        <div class="metric-card"><div class="metric-icon">📋</div><div class="metric-label">Active Requests</div><div class="metric-value" id="stat-requests">0</div></div>
+      </div>
+      <div class="section-divider">
+        <h3>Your Listings</h3>
+        <button class="btn btn-primary btn-sm" onclick="switchTab('add')">+ Add New</button>
+      </div>
+      <div id="owner-properties"></div>
+    </div>
+
+    <!-- TAB: ADD PROPERTY -->
+    <div id="tab-add" style="display:none">
+      <div class="dash-header">
+        <h2 id="add-form-title">Add New Property</h2>
+        <p>Fill in the details and submit for admin review</p>
+      </div>
+      <form class="add-property-form" onsubmit="event.preventDefault();submitProperty()">
+        <div class="form-grid" style="margin-bottom:1rem">
+          <div class="form-group">
+            <label class="form-label">Property Name *</label>
+            <input class="form-input" id="p-name" placeholder="Sunrise Boys Hostel" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">City *</label>
+            <input class="form-input" id="p-city" placeholder="Mumbai" required/>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:1rem">
+          <label class="form-label">Full Address *</label>
+          <input class="form-input" id="p-address" placeholder="Andheri West, near Station" required/>
+        </div>
+        <div class="form-grid" style="margin-bottom:1rem">
+          <div class="form-group">
+            <label class="form-label">Monthly Rent (₹) *</label>
+            <input class="form-input" type="number" id="p-price" placeholder="8500" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rooms Available</label>
+            <input class="form-input" type="number" id="p-rooms" placeholder="5"/>
+          </div>
+        </div>
+        <div class="form-grid" style="margin-bottom:1rem">
+          <div class="form-group">
+            <label class="form-label">Type *</label>
+            <select class="form-select" id="p-type" required>
+              <option value="">Select type</option>
+              <option>Hostel</option>
+              <option>PG</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">For *</label>
+            <select class="form-select" id="p-gender" required>
+              <option value="">Select</option>
+              <option>Boys</option>
+              <option>Girls</option>
+              <option>Both</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:1rem">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" id="p-desc" placeholder="Describe your property — location highlights, nearby colleges, special features..."></textarea>
+        </div>
+        <div class="form-group" style="margin-bottom:1.5rem">
+          <label class="form-label" style="margin-bottom:0.5rem">Amenities</label>
+          <div class="amenity-checkbox-grid">
+            <label class="amenity-cb"><input type="checkbox" value="WiFi"> WiFi</label>
+            <label class="amenity-cb"><input type="checkbox" value="Meals"> Meals</label>
+            <label class="amenity-cb"><input type="checkbox" value="AC"> AC</label>
+            <label class="amenity-cb"><input type="checkbox" value="Laundry"> Laundry</label>
+            <label class="amenity-cb"><input type="checkbox" value="Hot Water"> Hot Water</label>
+            <label class="amenity-cb"><input type="checkbox" value="Security"> Security</label>
+            <label class="amenity-cb"><input type="checkbox" value="Gym"> Gym</label>
+            <label class="amenity-cb"><input type="checkbox" value="Power Backup"> Power Backup</label>
+            <label class="amenity-cb"><input type="checkbox" value="Parking"> Parking</label>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem">
+          <button type="submit" class="btn btn-primary btn-lg" id="submit-prop-btn">Submit for Review</button>
+          <button type="button" class="btn btn-ghost" onclick="resetPropertyForm()">Reset</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- TAB: REQUESTS -->
+    <div id="tab-requests" style="display:none">
+      <div class="dash-header">
+        <h2>Booking Requests</h2>
+        <p>Review and respond to student booking requests</p>
+      </div>
+      <div id="request-list"></div>
+    </div>
+
+    <!-- TAB: EARNINGS -->
+    <div id="tab-earnings" style="display:none">
+      <div class="dash-header">
+        <h2>Earnings Overview</h2>
+        <p>Track your rental income across all properties</p>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card"><div class="metric-icon">💰</div><div class="metric-label">This Month</div><div class="metric-value" style="color:var(--green)">₹42,500</div><div class="metric-change up">↑ +12% from last month</div></div>
+        <div class="metric-card"><div class="metric-icon">📅</div><div class="metric-label">This Year</div><div class="metric-value">₹4.8L</div><div class="metric-change up">↑ +24% YoY</div></div>
+        <div class="metric-card"><div class="metric-icon">🏠</div><div class="metric-label">Occupancy Rate</div><div class="metric-value">87%</div><div class="metric-change up">↑ +5%</div></div>
+        <div class="metric-card"><div class="metric-icon">⭐</div><div class="metric-label">Avg Rating</div><div class="metric-value">4.8</div></div>
+      </div>
+      <div class="card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:1.25rem;font-size:1rem">Recent Transactions</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Student</th><th>Month</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Sunrise Boys Hostel</td><td>Rahul V.</td><td>Mar 2024</td><td style="color:var(--green)">₹8,500</td><td><span class="badge badge-approved">Paid</span></td></tr>
+              <tr><td>Sunrise Boys Hostel</td><td>Arjun P.</td><td>Mar 2024</td><td style="color:var(--green)">₹8,500</td><td><span class="badge badge-approved">Paid</span></td></tr>
+              <tr><td>Girls PG Andheri</td><td>Sneha M.</td><td>Mar 2024</td><td style="color:var(--green)">₹12,000</td><td><span class="badge badge-approved">Paid</span></td></tr>
+              <tr><td>Campus View</td><td>Dev S.</td><td>Mar 2024</td><td style="color:var(--accent)">₹9,500</td><td><span class="badge badge-pending">Pending</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../js/owner.js"></script>
+</body>
+</html>
