@@ -146,7 +146,8 @@ async function doLogin() {
       window.location.href = role === 'admin' ? 'admin-dashboard.html' : role === 'owner' ? 'owner-dashboard.html' : 'student-dashboard.html';
     }, 500);
   } catch(e) {
-    showToast('No backend running. Use the demo buttons below ↓', 'error');
+    console.error(e);
+    showToast(e.message, 'error');
     btn.innerHTML = 'Log In';
     btn.disabled = false;
   }
